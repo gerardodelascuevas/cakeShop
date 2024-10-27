@@ -1,0 +1,5 @@
+ALTER TABLE "order" ADD COLUMN client_id BIGINT;
+
+ALTER TABLE "order"
+ADD CONSTRAINT fk_client
+FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE;
