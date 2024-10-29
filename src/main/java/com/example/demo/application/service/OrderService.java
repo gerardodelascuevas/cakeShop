@@ -7,7 +7,6 @@ import com.example.demo.domain.repository.FlavorRepository;
 import com.example.demo.domain.repository.OrderRepository;
 import com.example.demo.domain.repository.SizeRepository;
 import com.example.demo.domain.service.OrderDomainService;
-import com.example.demo.infraestructure.persistence.repository.ClientJpaRepository;
 import com.example.demo.infraestructure.persistence.repository.FlavorJpaRepository;
 import com.example.demo.infraestructure.persistence.repository.ImageMongoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -120,7 +119,7 @@ public class OrderService implements OrderDomainService {
     public String destroy(Long id){
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
-        if(order.getOrderStatus().equals(OrderStatus.IN_PROGRESS) || order.getOrderStatus().equals(OrderStatus.DELIVERED)){
+        if(OrderStatus.IN_PROGRESS.equals(order.getOrderStatus()) || OrderStatus.DELIVERED.equals(order.getOrderStatus())){
             throw new IllegalArgumentException("Order cannot be canceled");
         }
         orderRepository.deleteById(id);

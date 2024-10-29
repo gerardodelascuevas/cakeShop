@@ -1,6 +1,5 @@
 package com.example.demo.application.service;
 
-import com.example.demo.domain.model.Flavor;
 import com.example.demo.domain.model.Size;
 import com.example.demo.domain.repository.SizeRepository;
 import com.example.demo.domain.service.SizeDomainService;
