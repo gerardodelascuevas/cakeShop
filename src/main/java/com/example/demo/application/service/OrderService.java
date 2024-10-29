@@ -31,7 +31,7 @@ public class OrderService implements OrderDomainService {
     private final SizeRepository sizeRepository;
     private final ImageService imageService;
 
-    public OrderService(OrderRepository orderRepository, ClientJpaRepository clientRepository, FlavorJpaRepository flavorRepository, ImageMongoRepository imageRepository, SizeRepository sizeRepository, ImageService imageService) {
+    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, FlavorJpaRepository flavorRepository, ImageMongoRepository imageRepository, SizeRepository sizeRepository, ImageService imageService) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
         this.flavorRepository = flavorRepository;
@@ -59,7 +59,10 @@ public class OrderService implements OrderDomainService {
 
     @Override
     public List<Order> getByDate(LocalDateTime startDate, LocalDateTime endDate) {
-        return List.of();
+        List<Order> allOrders = orderRepository.findAll();
+        return allOrders.stream()
+                .filter(order -> order.getCreatedAt().isAfter(startDate) && order.getCreatedAt().isBefore(endDate))
+                .collect(Collectors.toList());
     }
 
     public OrderDto storeOrder(OrderDto dto) {
@@ -132,7 +135,7 @@ public class OrderService implements OrderDomainService {
                 .collect(Collectors.toList());
     }
 
-    private List<Flavor> getFlavors(OrderDto dto){
+    public List<Flavor> getFlavors(OrderDto dto){
         if (dto.getFlavorNames().size() > 3) {
             throw new IllegalArgumentException("A maximum of 3 flavors is allowed.");
         }

@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -65,4 +67,16 @@ public class OrderController {
                 .body(output);
     }
 
+    @RequiredToken
+    @GetMapping("/by-date")
+    public ResponseEntity<List<Order>> getOrdersByDate(
+            @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("endDate") LocalDate endDate) {
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.plusDays(1).atStartOfDay();
+
+        List<Order> orders = service.getByDate(startDateTime, endDateTime);
+        return ResponseEntity.ok(orders);
+    }
 }

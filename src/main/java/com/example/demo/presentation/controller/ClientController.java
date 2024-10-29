@@ -2,6 +2,7 @@ package com.example.demo.presentation.controller;
 
 import com.example.demo.application.dto.ClientDto;
 import com.example.demo.application.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class ClientController {
 
     private final ClientService service;
 
+    @Autowired
     public ClientController(ClientService service) {
         this.service = service;
     }
